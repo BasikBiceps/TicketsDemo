@@ -17,6 +17,5 @@ namespace TicketsDemo.Data.Entities
         public int ReservationId { get; set; }
         public List<PriceComponent> PriceComponents { get; set; }
         public DateTime CreatedDate { get; set; }
-        public bool IncludeTea { get; set; }
     }
 }

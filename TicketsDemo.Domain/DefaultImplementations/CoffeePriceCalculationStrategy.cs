@@ -9,11 +9,11 @@ using TicketsDemo.Domain.Interfaces;
 
 namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
 {
-    public class TeaPriceCalculationStrategy : IPriceCalculationStrategy
+    public class CoffeePriceCalculationStrategy : IPriceCalculationStrategy
     {
         private decimal _price;
 
-        public TeaPriceCalculationStrategy(decimal price)
+        public CoffeePriceCalculationStrategy(decimal price)
         {
             _price = price;
         }
@@ -24,13 +24,13 @@ namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
 
             var teaComponent = new PriceComponent()
             {
-                Name = "Price for tea",
+                Name = "Price for coffee",
                 Value = _price
             };
             components.Add(teaComponent);
 
             return components;
         }
-    
+
     }
 }

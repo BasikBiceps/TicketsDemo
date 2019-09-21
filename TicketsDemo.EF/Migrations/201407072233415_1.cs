@@ -82,7 +82,6 @@ namespace TicketsDemo.EF.Migrations
                     LastName = c.String(),
                     ReservationId = c.Int(nullable: false),
                     CreatedDate = c.DateTime(nullable: false),
-                    IncludeTea = c.Boolean(nullable: false)
                 })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Reservation", t => t.Id)
