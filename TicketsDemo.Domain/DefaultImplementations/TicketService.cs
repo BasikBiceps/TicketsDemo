@@ -25,7 +25,7 @@ namespace TicketsDemo.Domain.DefaultImplementations
             _runRepository = runRepository;
         }
 
-        public Ticket CreateTicket(int reservationId, string fName, string lName)
+        public Ticket CreateTicket(int reservationId, string fName, string lName, bool includeTea)
         {
             var res = _resRepo.Get(reservationId);
 
@@ -41,6 +41,7 @@ namespace TicketsDemo.Domain.DefaultImplementations
                 CreatedDate = DateTime.Now,
                 FirstName = fName,
                 LastName = lName,
+                IncludeTea = includeTea,
                 Status = TicketStatusEnum.Active,
                 PriceComponents = new List<PriceComponent>()
             };
