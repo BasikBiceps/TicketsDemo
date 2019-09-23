@@ -9,23 +9,27 @@ using TicketsDemo.Domain.Interfaces;
 
 namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
 {
-    public class DecoratorCalculationStrategy : IPriceCalculationStrategy
+    public class BeveragesPriceCalculationStrategy : IPriceCalculationStrategy
     {
-        private List<IPriceCalculationStrategy> _strategyList;
-        
-        public DecoratorCalculationStrategy(List<IPriceCalculationStrategy> strategyList)
+        private decimal _price;
+        private string _name;
+
+        public BeveragesPriceCalculationStrategy(string name, decimal price)
         {
-            _strategyList = strategyList;
+            _price = price;
+            _name = name;
         }
-        
+
         public List<PriceComponent> CalculatePrice(PlaceInRun placeInRun)
         {
             var components = new List<PriceComponent>();
 
-            foreach (var strategy in _strategyList)
+            var teaComponent = new PriceComponent()
             {
-                components.AddRange(strategy.CalculatePrice(placeInRun));
-            }
+                Name = "Price for " + _name,
+                Value = _price
+            };
+            components.Add(teaComponent);
 
             return components;
         }

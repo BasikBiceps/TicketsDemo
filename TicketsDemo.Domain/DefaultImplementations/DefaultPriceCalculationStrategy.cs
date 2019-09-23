@@ -37,11 +37,11 @@ namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
             components.Add(placeComponent);
 
 
-            if (placeComponent.Value > 30) {
+            if (placeComponent.Value > Prices.CashDeskLimit) {
                 var cashDeskComponent = new PriceComponent()
                 {
                     Name = "Cash desk service tax",
-                    Value = placeComponent.Value * 0.2m
+                    Value = placeComponent.Value * Prices.CashDeskMultiplier
                 };
                 components.Add(cashDeskComponent);
             }
