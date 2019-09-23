@@ -11,36 +11,22 @@ namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
 {
     public class DecoratorCalculationStrategy : IPriceCalculationStrategy
     {
-        private IPriceCalculationStrategy _defaultStrategy;
-        private IPriceCalculationStrategy _teaStrategy;
-        private IPriceCalculationStrategy _coffeeStrategy;
-
-        public bool IncludeTea { get; set; } = true;
-        public bool IncludeCoffee { get; set; } = true;
+        private List<IPriceCalculationStrategy> _strategyList;
         
-        public DecoratorCalculationStrategy(IRunRepository runRepository, ITrainRepository trainRepository)
+        public DecoratorCalculationStrategy(List<IPriceCalculationStrategy> strategyList)
         {
-            _defaultStrategy = new DefaultPriceCalculationStrategy(runRepository, trainRepository);
-            _teaStrategy = new TeaPriceCalculationStrategy(Prices.Tea);
-            _coffeeStrategy = new CoffeePriceCalculationStrategy(Prices.Coffee);
+            _strategyList = strategyList;
         }
-
+        
         public List<PriceComponent> CalculatePrice(PlaceInRun placeInRun)
         {
-            var components = _defaultStrategy.CalculatePrice(placeInRun);
-
-            if (IncludeTea)
+            var components = new List<PriceComponent>();
+            foreach (var strategy in _strategyList)
             {
-                components.AddRange(_teaStrategy.CalculatePrice(placeInRun));
-            }
-
-            if (IncludeCoffee)
-            {
-                components.AddRange(_coffeeStrategy.CalculatePrice(placeInRun));
+                components.AddRange(strategy.CalculatePrice(placeInRun));
             }
 
             return components;
         }
-    
     }
 }

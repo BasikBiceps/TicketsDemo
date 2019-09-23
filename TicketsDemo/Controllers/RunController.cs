@@ -16,20 +16,20 @@ namespace TicketsDemo.Controllers
         private IReservationRepository _reservationRepo;
         private IReservationService _resServ;
         private ITicketService _tickServ;
-        private IPriceCalculationStrategy _priceCalc;
+        private IStrategyFactory _strategyFactory;
         private ITrainRepository _trainRepo;
 
         public RunController(ITicketRepository tick, IRunRepository run, 
             IReservationService resServ,
             ITicketService tickServ,
-            IPriceCalculationStrategy priceCalcStrategy,
+            IStrategyFactory strategyFactory,
             IReservationRepository reservationRepo,
             ITrainRepository trainRepo) {
             _tickRepo = tick;
             _runRepo = run;
             _resServ = resServ;
             _tickServ = tickServ;
-            _priceCalc = priceCalcStrategy;
+            _strategyFactory = strategyFactory;
             _reservationRepo = reservationRepo;
             _trainRepo = trainRepo;
         }
@@ -57,7 +57,7 @@ namespace TicketsDemo.Controllers
             {
                 Reservation = reservation,
                 PlaceInRun = place,
-                PriceComponents = _priceCalc.CalculatePrice(place),
+                PriceComponents = _strategyFactory.createCalculationStrategy(new Domain.DTO.StrategyDTO { IncludeTea = true, IncludeCoffee = true }).CalculatePrice(place),
                 Date = place.Run.Date,
                 Train = _trainRepo.GetTrainDetails(place.Run.TrainId),
             };
@@ -68,7 +68,7 @@ namespace TicketsDemo.Controllers
         [HttpPost]
         public ActionResult CreateTicket(CreateTicketModel model)
         {
-            var tick = _tickServ.CreateTicket(model.ReservationId,model.FirstName,model.LastName, model.IncludeTea, model.IncludeCoffee);
+            var tick = _tickServ.CreateTicket(model.ReservationId,model.FirstName,model.LastName, new Domain.DTO.StrategyDTO { IncludeTea = model.IncludeTea, IncludeCoffee = model.IncludeCoffee});
             return RedirectToAction("Ticket", new { id = tick.Id });
         }
 

@@ -19,7 +19,7 @@ namespace TicketsDemo.EF.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Train", t => t.TrainId, cascadeDelete: true)
                 .Index(t => t.TrainId);
-            
+
             CreateTable(
                 "dbo.Place",
                 c => new

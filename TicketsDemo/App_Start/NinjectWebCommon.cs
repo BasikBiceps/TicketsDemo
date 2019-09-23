@@ -75,7 +75,8 @@ namespace TicketsDemo.App_Start
             kernel.Bind<IReservationService>().To<ReservationService>();
 
             //todo factory
-            kernel.Bind<IPriceCalculationStrategy>().To<DecoratorCalculationStrategy>();
+            kernel.Bind<IStrategyFactory>().To<StrategyFactory>();
+            //kernel.Bind<IPriceCalculationStrategy>().To<DecoratorCalculationStrategy>();
             kernel.Bind<ILogger>().ToMethod(x =>
                 new FileLogger(HttpContext.Current.Server.MapPath("~/App_Data")));
         }        

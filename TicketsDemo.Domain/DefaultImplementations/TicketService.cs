@@ -13,20 +13,20 @@ namespace TicketsDemo.Domain.DefaultImplementations
     public class TicketService : ITicketService
     {
         private ITicketRepository _tickRepo;
-        private IPriceCalculationStrategy _priceStr;
+        private IStrategyFactory _strategyFactory;
         private IReservationRepository _resRepo;
         private IRunRepository _runRepository;
 
         public TicketService(ITicketRepository tickRepo, IReservationRepository resRepo,
-            IPriceCalculationStrategy priceCalculationStrategy, IRunRepository runRepository)
+            IStrategyFactory strategyFactory, IRunRepository runRepository)
         {
             _tickRepo = tickRepo;
             _resRepo = resRepo;
-            _priceStr = priceCalculationStrategy;
+            _strategyFactory = strategyFactory;
             _runRepository = runRepository;
         }
 
-        public Ticket CreateTicket(int reservationId, string fName, string lName, bool includeTea, bool includeCoffee)
+        public Ticket CreateTicket(int reservationId, string fName, string lName, DTO.StrategyDTO strategyDTO)
         {
             var res = _resRepo.Get(reservationId);
 
@@ -46,11 +46,7 @@ namespace TicketsDemo.Domain.DefaultImplementations
                 PriceComponents = new List<PriceComponent>()
             };
 
-            DecoratorCalculationStrategy temp = (DecoratorCalculationStrategy)_priceStr;
-            temp.IncludeCoffee = includeCoffee;
-            temp.IncludeTea = includeTea;
-
-            newTicket.PriceComponents = temp.CalculatePrice(placeInRun);
+            newTicket.PriceComponents = _strategyFactory.createCalculationStrategy(strategyDTO).CalculatePrice(placeInRun);
 
             _tickRepo.Create(newTicket);
             return newTicket;
