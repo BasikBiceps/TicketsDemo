@@ -32,6 +32,10 @@ namespace TicketsDemo.Domain.DefaultImplementations.PriceCalculationStrategy
                         car.Number == placeInRun.CarriageNumber))
                     .SingleOrDefault(x => x != null);
 
+            place.Carriage = train.Carriages[place.CarriageId - train.Carriages[0].Id];
+
+            place.Carriage.Train = train;
+
             var placeComponent = new PriceComponent() { Name = "Main price" };
             placeComponent.Value = place.Carriage.DefaultPrice * place.PriceMultiplier;
             components.Add(placeComponent);
