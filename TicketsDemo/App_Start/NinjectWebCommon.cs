@@ -65,6 +65,8 @@ namespace TicketsDemo.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<ITicketRepository>().To<TicketRepository>();
+            kernel.Bind<TicketsDemo.MongoDB.IContextFactory>().To<TicketsDemo.MongoDB.ContextFactory>();
+            kernel.Bind<TicketsDemo.MongoDB.ISettingsProvider>().To<TicketsDemo.MongoDB.SettingsProvider>();
             kernel.Bind<ITrainRepository>().To<TicketsDemo.MongoDB.Repositories.TrainRepository>();
 
             kernel.Bind<IRunRepository>().To<RunRepository>();

@@ -12,33 +12,42 @@ namespace TicketsDemo.MongoDB.Repositories
 {
     public class TrainRepository : ITrainRepository
     {
+        IContextFactory _fct;
+
+        public TrainRepository(IContextFactory fct) {
+            _fct = fct;
+        }
+
         public void CreateTrain(Train train)
         {
-            TicketsContext tc = new TicketsContext();
-            tc.Trains.InsertOneAsync(train);
+            IContext tc = _fct.CreateContext();
+            tc.Trains.InsertOne(train);
         }
 
         public void DeleteTrain(Train train)
         {
-            TicketsContext tc = new TicketsContext();
-            tc.Trains.DeleteOneAsync(new BsonDocument("_id", train.Id));
+            IContext tc = _fct.CreateContext();
+            tc = _fct.CreateContext();
+            tc.Trains.DeleteOne(new BsonDocument("_id", train.Id));
         }
 
         public List<Train> GetAllTrains()
         {
-            TicketsContext tc = new TicketsContext();
+            IContext tc = _fct.CreateContext();
+            tc = _fct.CreateContext();
             return tc.Trains.Find(new BsonDocument()).ToList();
         }
 
         public Train GetTrainDetails(int trainId)
         {
-            TicketsContext tc = new TicketsContext();
+            IContext tc = _fct.CreateContext();
+            tc = _fct.CreateContext();
             return tc.Trains.Find(new BsonDocument("_id", trainId)).FirstOrDefault();
         }
 
         public void UpdateTrain(Train train)
         {
-            TicketsContext tc = new TicketsContext();
+            IContext tc = _fct.CreateContext();
             tc.Trains.ReplaceOneAsync(new BsonDocument("_id", train.Id), train);
         }
     }

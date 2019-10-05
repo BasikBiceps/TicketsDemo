@@ -11,19 +11,19 @@ using TicketsDemo.Data.Repositories;
 
 namespace TicketsDemo.MongoDB
 {
-    public class TicketsContext
+    public class TicketsContext : IContext
     {
-        public MongoClient client { get; set; }
-        public IMongoDatabase db { get; set; }
+        public MongoClient Client { get; set; }
+        public IMongoDatabase DB { get; set; }
 
         public IMongoCollection<Train> Trains
         {
-            get { return db.GetCollection<Train>("Train"); }
+            get { return DB.GetCollection<Train>("Train"); }
         }
-        public TicketsContext()
+        public TicketsContext(ISettingsProvider provider)
         {
-            client = new MongoClient("mongodb://localhost:27017");
-            db = client.GetDatabase("Study");
+            Client = new MongoClient(provider.ConnectionString);
+            DB = Client.GetDatabase("Study");
         }
     }
 }
